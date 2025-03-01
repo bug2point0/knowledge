@@ -7,7 +7,7 @@ from odoo.http import request
 
 class AttachmentZippedDownloadController(http.Controller):
     @http.route("/web/attachment/download_zip", type="http", auth="user")
-    def download_zip(self, ids=None, debug=0):
+    def download_zip(self, ids=None, zipname=None, debug=0):
         ids = [] if not ids else ids
         if len(ids) == 0:
             return
@@ -18,6 +18,6 @@ class AttachmentZippedDownloadController(http.Controller):
             data=out_file.getvalue(),
             mimetype="application/zip",
             as_attachment=True,
-            download_name=_("attachments.zip"),
+            download_name=f'{zipname}.zip' if zipname else _("attachments.zip"),
         )
         return stream.get_response()

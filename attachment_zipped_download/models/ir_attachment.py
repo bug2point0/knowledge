@@ -11,7 +11,7 @@ from odoo.exceptions import UserError
 class IrAttachment(models.Model):
     _inherit = "ir.attachment"
 
-    def action_attachments_download(self):
+    def action_attachments_download(self, zipname=None):
         items = self.filtered(lambda x: x.type == "binary")
         if not items:
             raise UserError(
@@ -20,7 +20,7 @@ class IrAttachment(models.Model):
         ids = ",".join(map(str, items.ids))
         return {
             "type": "ir.actions.act_url",
-            "url": "/web/attachment/download_zip?ids=%s" % (ids),
+            "url": f"/web/attachment/download_zip?ids={ids}&zipname={zipname}",
             "target": "self",
         }
 
